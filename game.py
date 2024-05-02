@@ -32,15 +32,14 @@ def calculate_hand(hand):
         aces -= 1
     return total
 
-def show_hand(hand, hidden=False):
+def show_hand(hand, total, hidden=False):
     """Print out the hand."""
     if hidden:
-        print("Hidden")
         print("[" + hand[0]['value'] + " of " + hand[0]['suit'] + ", Hidden]")
     else:
         for card in hand:
             print("[" + card['value'] + " of " + card['suit'] + "]", end=" ")
-        print()
+        print("= ", total)
 
 def play_blackjack():
     print("Welcome to Blackjack!")
@@ -62,40 +61,39 @@ def play_blackjack():
             continue
         
         print("Dealer's hand:")
-        show_hand(dealer_hand, hidden=True)
+        dealer_total = calculate_hand(dealer_hand)
+        show_hand(dealer_hand, dealer_total, hidden=True)
         
         print("Your hand:")
-        show_hand(player_hand)
-        
         player_total = calculate_hand(player_hand)
-        dealer_total = calculate_hand(dealer_hand)
+        show_hand(player_hand, player_total)
+        
         
         while True:
             if player_total == 21:
                 print("Blackjack! You win!")
-                balance += int(1.5 * bet)
+                balance += int(2 * bet)
                 break
 
             choice = input("Type 'hit' to take another card, or 'stand' to hold: ").lower()
             if choice == 'hit':
                 new_card = deal_card(deck)
                 player_hand.append(new_card)
-                print("You drew:")
-                print("[" + new_card['value'] + " of " + new_card['suit'] + "]")
+                print("You drew: [" + new_card['value'] + " of " + new_card['suit'] + "]")
                 player_total = calculate_hand(player_hand)
-                show_hand(player_hand)
+                show_hand(player_hand, player_total)
                 if player_total > 21:
                     print("Bust! You lose.")
                     balance -= bet
                     break
             elif choice == 'stand':
                 print("Dealer's turn")
-                show_hand(dealer_hand)
+                show_hand(dealer_hand, dealer_total)
                 while dealer_total < 17:
                     new_card = deal_card(deck)
                     dealer_hand.append(new_card)
                     dealer_total = calculate_hand(dealer_hand)
-                show_hand(dealer_hand)
+                show_hand(dealer_hand, dealer_total)
                 if dealer_total > 21 or dealer_total < player_total:
                     print("You win!")
                     balance += bet
