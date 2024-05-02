@@ -1,4 +1,4 @@
-import random
+import random, sys
 
 def create_deck():
     """Create a deck of cards."""
@@ -43,8 +43,7 @@ def show_hand(hand, total, hidden=False):
 
 def play_blackjack():
     print("Welcome to Blackjack!")
-    quarters = int(input("Insert quarters (1 quarter = $25): "))
-    balance = quarters * 25
+    balance = int(input("Insert dollars: "))
 
     while balance > 0:
         deck = create_deck()
@@ -54,7 +53,11 @@ def play_blackjack():
         dealer_hand = [deal_card(deck), deal_card(deck)]
         
         print(f"Your balance: ${balance}")
-        bet = int(input("Place your bet: "))
+        bet = int(input("Place your bet, 0 to cash out: "))
+
+        if bet == 0:
+            print(f"Your balance: ${balance}")
+            sys.exit()
         
         if bet > balance:
             print("You do not have enough balance.")
@@ -67,13 +70,49 @@ def play_blackjack():
         print("Your hand:")
         player_total = calculate_hand(player_hand)
         show_hand(player_hand, player_total)
-        
+
+        CanDoubledDown = True
         
         while True:
             if player_total == 21:
                 print("Blackjack! You win!")
                 balance += int(2 * bet)
                 break
+
+            if balance >= bet * 2 and CanDoubledDown:
+                if input("Do you want to double down? (yes/no): ").lower() == 'yes':
+                    if balance >= bet * 2:
+                        bet *= 2
+                        new_card = deal_card(deck)
+                        player_hand.append(new_card)
+                        print("You drew: [" + new_card['value'] + " of " + new_card['suit'] + "]")
+                        player_total = calculate_hand(player_hand)
+                        show_hand(player_hand, player_total)
+                        if player_total > 21:
+                            print("Bust! You lose.")
+                            balance -= bet
+                            break
+                        else:
+                            print("Dealer's turn")
+                            show_hand(dealer_hand, dealer_total)
+                            while dealer_total < 17:
+                                new_card = deal_card(deck)
+                                dealer_hand.append(new_card)
+                                dealer_total = calculate_hand(dealer_hand)
+                            show_hand(dealer_hand, dealer_total)
+                            if dealer_total > 21 or dealer_total < player_total:
+                                print("You win!")
+                                balance += bet
+                            elif dealer_total > player_total:
+                                print("You lose.")
+                                balance -= bet
+                            else:
+                                print("Push (tie).")
+                            break
+                    else:
+                        print("Not enough balance to double down.")
+            
+            CanDoubledDown = False
 
             choice = input("Type 'hit' to take another card, or 'stand' to hold: ").lower()
             if choice == 'hit':
