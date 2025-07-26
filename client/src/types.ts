@@ -3,17 +3,27 @@ export interface Card {
   suit: string;
 }
 
-export interface GameState {
-  playerHand: Card[];
-  dealerHand: Card[];
-  playerTotal: number;
-  dealerTotal: number;
+export interface Player {
+  id: number;
+  name: string;
+  hand: Card[];
+  total: number;
   balance: number;
   bet: number;
-  gamePhase: 'betting' | 'playing' | 'dealer' | 'finished';
   canDoubleDown: boolean;
+  isActive: boolean;
+  isFinished: boolean;
+  winner?: 'win' | 'lose' | 'push';
+}
+
+export interface GameState {
+  players: Player[];
+  dealerHand: Card[];
+  dealerTotal: number;
+  gamePhase: 'setup' | 'betting' | 'playing' | 'dealer' | 'results' | 'finished';
+  currentPlayerIndex: number;
   message: string;
-  winner?: 'player' | 'dealer' | 'push';
+  allPlayersFinished: boolean;
 }
 
 export interface GameResponse {
