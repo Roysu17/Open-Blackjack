@@ -96,6 +96,12 @@ def dealer_play(game_state):
         game_state['dealerHand'].append(new_card)
         game_state['dealerTotal'] = calculate_hand(game_state['dealerHand'])
 
+def can_double_down(player):
+    """Check if player can double down."""
+    return (len(player['hand']) == 2 and  # Only on first two cards
+            player['balance'] >= player['bet'] * 2 and  # Must have enough balance for doubled bet
+            not player['isFinished'])  # Player hasn't finished their turn
+
 def determine_winners(game_state):
     """Determine winners for all players."""
     dealer_total = game_state['dealerTotal']
@@ -195,7 +201,7 @@ def place_bet():
         for player in game_state['players']:
             player['hand'] = [deal_card(game_state['deck']), deal_card(game_state['deck'])]
             player['total'] = calculate_hand(player['hand'])
-            player['canDoubleDown'] = True
+            player['canDoubleDown'] = can_double_down(player)
             player['isFinished'] = False
         
         # Start with first player
@@ -347,11 +353,11 @@ def double_down():
         return jsonify({'success': False, 'message': 'Not in playing phase'})
     
     player = next((p for p in game_state['players'] if p['id'] == player_id), None)
-    if not player or not player['isActive'] or not player['canDoubleDown']:
-        return jsonify({'success': False, 'message': 'Cannot double down'})
+    if not player or not player['isActive']:
+        return jsonify({'success': False, 'message': 'Invalid player or not active'})
     
-    if player['balance'] < player['bet']:
-        return jsonify({'success': False, 'message': 'Insufficient balance to double down'})
+    if not can_double_down(player):
+        return jsonify({'success': False, 'message': 'Cannot double down - insufficient balance or invalid timing'})
     
     # Double the bet and deal one card
     player['bet'] *= 2
