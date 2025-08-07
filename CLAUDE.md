@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
+
 Open-Blackjack is a web-based multiplayer implementation of the classic Blackjack casino game with a React TypeScript frontend and Flask Python backend. The game supports hotseat multiplayer for two players on a single device, featuring a modern web interface while maintaining the classic casino experience.
+
 
 ## Running the Application
 
@@ -39,6 +41,7 @@ The application will be available at `http://localhost:5000`.
 The application uses a client-server architecture:
 
 ### Backend (`app.py`)
+
 Flask server with REST API endpoints for multiplayer games:
 - `/api/start` - Initialize new multiplayer game with player names and starting balance
 - `/api/bet` - Place bet for specific player and deal initial cards when both players bet
@@ -46,6 +49,7 @@ Flask server with REST API endpoints for multiplayer games:
 - `/api/stand` - End current player's turn, move to next player or dealer
 - `/api/double` - Double down for specific player (double bet, one card, auto-stand)
 - `/api/next-round` - Start next round after results are shown
+
 - `/api/state` - Get current game state
 
 Core game logic functions (from original `game.py`):

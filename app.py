@@ -67,6 +67,7 @@ def create_game_state():
         'currentPlayerIndex': 0,
         'message': '',
         'allPlayersFinished': False
+
     }
 
 def get_session_id():
@@ -135,6 +136,7 @@ def determine_winners(game_state):
         else:
             # Push
             player['winner'] = 'push'
+
 
 @app.route('/api/start', methods=['POST'])
 def start_game():

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Hand } from "./components/Hand";
+
 import { PlayerHand } from "./components/PlayerHand";
 import { api } from "./api";
 import type { GameState, Player } from "./types";
+
 import "./App.css";
 
 function App() {
@@ -11,12 +13,14 @@ function App() {
   const [balanceInput, setBalanceInput] = useState("100");
   const [player1Name, setPlayer1Name] = useState("Player 1");
   const [player2Name, setPlayer2Name] = useState("Player 2");
+
   const [loading, setLoading] = useState(false);
 
   const startNewGame = async () => {
     setLoading(true);
     try {
       const response = await api.startGame(player1Name, player2Name, parseInt(balanceInput));
+
       if (response.success) {
         setGameState(response.gameState);
       }
@@ -80,6 +84,7 @@ function App() {
     setLoading(false);
   };
 
+
   const nextRound = async () => {
     setLoading(true);
     try {
@@ -97,7 +102,6 @@ function App() {
     if (!gameState) return null;
     return gameState.players.find(p => p.isActive) || null;
   };
-
   if (!gameState) {
     return (
       <div className="app">
@@ -151,6 +155,7 @@ function App() {
     <div className="app">
       <div className="game-container">
         <h1>🃏 Open Blackjack - Multiplayer</h1>
+
 
         {gameState.message && (
           <div className="message">{gameState.message}</div>

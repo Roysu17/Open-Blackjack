@@ -43,7 +43,6 @@ h1 {
   font-size: 1.2rem;
   font-weight: bold;
 }
-
 .game-layout {
   display: flex;
   flex-direction: column;
@@ -61,7 +60,6 @@ h1 {
   gap: 2rem;
   flex-wrap: wrap;
 }
-
 .hands {
   display: flex;
   justify-content: space-around;
@@ -152,7 +150,6 @@ h1 {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
 }
-
 .hand h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -284,6 +281,7 @@ button:disabled {
   font-size: 1.2rem;
 }
 
+
 .player-setup {
   display: flex;
   flex-direction: column;
@@ -371,6 +369,7 @@ button:disabled {
 .secondary:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.3) !important;
 }
+
 
 @media (max-width: 768px) {
   .hands {
