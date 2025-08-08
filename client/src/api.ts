@@ -8,7 +8,7 @@ export const api = {
     const response = await fetch(`${API_BASE}/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-
+      body: JSON.stringify({ player1Name, player2Name, balance }),
     });
     return response.json();
   },
