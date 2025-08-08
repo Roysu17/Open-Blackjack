@@ -1,70 +1,34 @@
 import type { GameResponse } from "./types";
-
-const API_BASE = "/api";
+import {
+  startGame as logicStartGame,
+  placeBet as logicPlaceBet,
+  hit as logicHit,
+  stand as logicStand,
+  doubleDown as logicDoubleDown,
+  nextRound as logicNextRound,
+  getGameState as logicGetGameState,
+} from "./blackjackLogic";
 
 export const api = {
-
   async startGame(player1Name: string, player2Name: string, balance: number): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/start`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ player1Name, player2Name, balance }),
-    });
-    return response.json();
+    return logicStartGame(player1Name, player2Name, balance);
   },
-
-
   async placeBet(playerId: number, bet: number): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/bet`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerId, bet }),
-
-    });
-    return response.json();
+    return logicPlaceBet(playerId, bet);
   },
-
-
   async hit(playerId: number): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/hit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerId }),
-    });
-    return response.json();
+    return logicHit(playerId);
   },
-
-
   async stand(playerId: number): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/stand`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerId }),
-
-    });
-    return response.json();
+    return logicStand(playerId);
   },
-
-
   async doubleDown(playerId: number): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/double`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerId }),
-    });
-    return response.json();
+    return logicDoubleDown(playerId);
   },
-
   async nextRound(): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/next-round`, {
-      method: "POST",
-
-    });
-    return response.json();
+    return logicNextRound();
   },
-
   async getGameState(): Promise<GameResponse> {
-    const response = await fetch(`${API_BASE}/state`);
-    return response.json();
+    return logicGetGameState();
   },
 };
